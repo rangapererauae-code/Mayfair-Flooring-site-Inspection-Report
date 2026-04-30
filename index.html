@@ -77,7 +77,7 @@
       box-shadow: none;
     }
     .report {
-      background: white;
+      background: WHITE;
       border-radius: 36px;
       border: 1px solid #e2ecf5;
       overflow: hidden;
@@ -85,7 +85,7 @@
     }
     .header {
       padding: 24px 28px;
-      background: linear-gradient(135deg, #ffffff, #f5faff);
+      background: #90A1B9;
       border-bottom: 1px solid #e2edf5;
     }
     .brand h2 {
@@ -271,7 +271,7 @@
 <body>
 <div class="wrap">
   <div class="toolbar">
-    <div><h1>📋 MAYFAIR FLOORING · INSPECTION</h1><small>iOS ready · all buttons functional</small></div>
+    <div><h1>📋 MAYFAIR </h1><small></small></div>
     <div class="btns">
       <button class="ghost" id="addPhotosBtn">📸 + Add Photos</button>
       <button class="secondary" id="clearFormBtn">🧹 Clear Form</button>
@@ -282,15 +282,15 @@
   <div class="report">
     <div class="header">
       <div class="brand">
-        <h2>Site Inspection Report</h2>
-        <p>SPC · LVT · Wood · Carpet · Full visual documentation with image comments</p>
+        <h2>SITE REPORTS - MAYFAIR FLOORING</h2>
+        <p>SPC · LVT · Wood · Carpet · Quick site reports</p>
       </div>
-      <div class="status-pill">FLOORING DEPT · iOS OPTIMIZED</div>
+      <div class="status-pill">FLOORING DEPARTMENT</div>
     </div>
 
     <form id="inspectionForm">
       <div class="section">
-        <h3><span></span>Project Details</h3>
+        <h3><span></span>PROJECT DETAILS</h3>
         <div class="grid">
           <div class="field"><label>Project name</label><input type="text" id="projectName" placeholder="e.g., Mayfair Residences"></div>
           <div class="field"><label>Visit date</label><input type="date" id="projectDate"></div>
@@ -303,14 +303,14 @@
       </div>
 
       <div class="section">
-        <h3><span></span>Flooring Scope</h3>
+        <h3><span></span>FLOORING DETAILS</h3>
         <div class="field"><label>Floor type</label><div class="chips" id="floorTypeGroup"><label class="chip"><input type="radio" name="floorType" value="SPC" checked> SPC</label><label class="chip"><input type="radio" name="floorType" value="LVT"> LVT</label><label class="chip"><input type="radio" name="floorType" value="Wood"> Wood</label><label class="chip"><input type="radio" name="floorType" value="Carpet/Other"> Carpet/Other</label></div></div>
         <div class="field"><label>Pattern</label><div class="chips" id="patternGroup"><label class="chip"><input type="radio" name="pattern" value="Straight plank" checked> Straight plank</label><label class="chip"><input type="radio" name="pattern" value="Herringbone"> Herringbone</label><label class="chip"><input type="radio" name="pattern" value="Chevron"> Chevron</label><label class="chip"><input type="radio" name="pattern" value="Other"> Other</label></div></div>
         <div class="field"><label>Remarks (pattern / material)</label><input type="text" id="otherMaterial" placeholder="If Other selected, describe here"></div>
       </div>
 
       <div class="section">
-        <h3><span></span>Site Conditions</h3>
+        <h3><span></span>SITE CONDITIONS</h3>
         <div class="grid">
           <div class="field"><label>Temperature °C</label><input type="number" step="0.1" id="siteTemp" placeholder="22.5"></div>
           <div class="field"><label>Material temp °C</label><input type="number" step="0.1" id="materialTemp"></div>
@@ -323,7 +323,7 @@
       </div>
 
       <div class="section">
-        <h3><span></span>Structural / Levelling & Variations</h3>
+        <h3><span></span>VARIATION STATEMENT</h3>
         <div class="field"><label>Wall removal / level issues</label><textarea id="wallRemoval" placeholder="Differences in level, cracks, wall removal, exposed edges"></textarea></div>
         <div class="field"><label>Modification works done?</label><div class="chips"><label class="chip"><input type="radio" name="modWorks" value="Yes"> Yes</label><label class="chip"><input type="radio" name="modWorks" value="No" checked> No</label><label class="chip"><input type="radio" name="modWorks" value="Pending"> Pending</label></div></div>
         <div class="field"><label>Modification details</label><textarea id="modDetails" placeholder="Grinding, levelling, crack injection, moisture barrier"></textarea></div>
@@ -332,7 +332,7 @@
       </div>
 
       <div class="section">
-        <h3><span></span>After Visit / Recommendation</h3>
+        <h3><span></span>NEXT STEP/RECOMMENDATIONS</h3>
         <div class="field"><label>Summary of findings</label><textarea id="afterVisit" placeholder="Overall readiness, missing elements, next steps"></textarea></div>
         <div class="field"><label>Recommendation</label><textarea id="recommendation" placeholder="Approve, proceed after minor works, variation required, re-inspect"></textarea></div>
       </div>
@@ -348,7 +348,7 @@
       </div>
 
       <div class="section">
-        <h3><span></span>Sign-off</h3>
+        <h3><span></span>INSPECTION CARRIED-OUT BY</h3>
         <div class="signature">
           <div class="field"><label>Client name</label><input id="clientSign" type="text" placeholder="Client representative"></div>
           <div class="field"><label>Inspector name</label><input id="inspectorSign" type="text" placeholder="Lead inspector"></div>
@@ -357,7 +357,7 @@
         </div>
       </div>
       <div class="footer-note">
-        ✅ Report includes photo comments · All data stays on device · Print or save as PDF
+        ALL RIGHTS RESERVED © 2027RANGA PERERA- REPORT RELATED ISSUES RELATED CONTACT ADMIN/PUBLISHER
       </div>
     </form>
   </div>
