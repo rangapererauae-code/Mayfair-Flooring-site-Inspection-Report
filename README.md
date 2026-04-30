@@ -17,7 +17,7 @@ An interactive, iOS-optimized inspection report tool for flooring professionals.
 
 ## Live Demo
 
-[View the inspection tool](https://[your-username].github.io/[repository-name]/)
+[View the inspection tool]https://rangapererauae-code.github.io/Mayfair-Flooring-site-Inspection-Report/
 
 ## Usage
 
