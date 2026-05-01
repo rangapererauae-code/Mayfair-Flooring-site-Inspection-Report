@@ -1,489 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>Mayfair Flooring · Inspection Report · iOS Fully Functional</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-    body {
-      margin: 0;
-      background: #f0f5fa;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
-      color: #1a344d;
-      font-size: 16px;
-      line-height: 1.45;
-    }
-    input, textarea, select, button {
-      font-size: 16px; /* prevents zoom on iOS */
-    }
-    .wrap {
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 0 16px 40px;
-    }
-    .toolbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      background: rgba(255,255,255,0.94);
-      backdrop-filter: blur(16px);
-      border-radius: 36px;
-      padding: 12px 20px;
-      margin-bottom: 20px;
-      border: 1px solid #d9e3ee;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-    }
-    .toolbar h1 {
-      margin: 0;
-      font-size: 1.35rem;
-      font-weight: 800;
-    }
-    .toolbar small {
-      color: #5e7285;
-    }
-    .btns {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    button {
-      border: none;
-      border-radius: 60px;
-      padding: 10px 20px;
-      font-weight: 700;
-      background: #2f6fed;
-      color: white;
-      cursor: pointer;
-      transition: 0.1s linear;
-      touch-action: manipulation;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    button:active { transform: scale(0.97); background: #1e5ad6; }
-    button.secondary { background: #5c6b7e; }
-    button.ghost {
-      background: #eef4fb;
-      color: #1a344d;
-      border: 1px solid #cbdde9;
-      box-shadow: none;
-    }
-    .report {
-      background: WHITE;
-      border-radius: 36px;
-      border: 1px solid #e2ecf5;
-      overflow: hidden;
-      box-shadow: 0 20px 35px rgba(0,0,0,0.05);
-    }
-    .header {
-      padding: 24px 28px;
-      background: #90A1B9;
-      border-bottom: 1px solid #e2edf5;
-    }
-    .brand h2 {
-      font-size: 30px;
-      margin: 0 0 8px;
-    }
-    .status-pill {
-      background: #eef3fe;
-      border-radius: 60px;
-      padding: 6px 18px;
-      font-weight: 700;
-      color: #1e4f8a;
-      display: inline-block;
-    }
-    .section {
-      padding: 20px 24px 12px;
-      border-top: 1px solid #e9f0f5;
-    }
-    .section h3 {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 0 0 18px;
-      font-size: 1.3rem;
-    }
-    .section h3 span {
-      width: 10px;
-      height: 10px;
-      background: #2f6fed;
-      border-radius: 10px;
-      box-shadow: 0 0 0 5px rgba(47,111,237,0.15);
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-    }
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #5e7285;
-    }
-    input, select, textarea {
-      border: 1px solid #d4e0ea;
-      border-radius: 20px;
-      padding: 14px 16px;
-      font-family: inherit;
-      background: white;
-      transition: 0.1s;
-    }
-    textarea {
-      min-height: 85px;
-      resize: vertical;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #2f6fed;
-      box-shadow: 0 0 0 3px rgba(47,111,237,0.2);
-    }
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 6px;
-    }
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #fbfdff;
-      border: 1px solid #d4e0ea;
-      border-radius: 60px;
-      padding: 10px 18px;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
-    .chip input {
-      width: 18px;
-      height: 18px;
-      margin: 0;
-      accent-color: #2f6fed;
-      pointer-events: none; /* let the label handle click */
-    }
-    .photo-header {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      align-items: flex-end;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .file-upload-btn {
-      background: #f2f6fc;
-      border: 1px dashed #2f6fed;
-      border-radius: 60px;
-      padding: 12px 24px;
-      font-weight: 600;
-      color: #2f6fed;
-      text-align: center;
-      cursor: pointer;
-      touch-action: manipulation;
-      display: inline-block;
-    }
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-      margin-top: 20px;
-    }
-    .photo-card {
-      background: white;
-      border: 1px solid #e2ecf5;
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.03);
-    }
-    .photo-slot {
-      aspect-ratio: 16 / 10;
-      background: #f4f9fe;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1px solid #eef2f8;
-    }
-    .photo-slot img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    .photo-meta {
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .photo-title {
-      display: flex;
-      justify-content: space-between;
-      font-weight: 600;
-      font-size: 13px;
-    }
-    .remove {
-      background: #ffe8ec;
-      border: none;
-      padding: 10px;
-      border-radius: 40px;
-      font-weight: 700;
-      color: #bc1c2e;
-      cursor: pointer;
-      width: 100%;
-      touch-action: manipulation;
-    }
-    .signature {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    .footer-note {
-      padding: 20px 24px;
-      font-size: 12px;
-      color: #7c8b9c;
-      background: #fbfeff;
-      border-top: 1px solid #e9f0f5;
-    }
-    @media (max-width: 680px) {
-      .section { padding: 18px; }
-      .photo-grid { grid-template-columns: 1fr; }
-    }
-    @media print {
-      .toolbar, .file-upload-btn, .remove { display: none !important; }
-      .report { border: none; box-shadow: none; }
-      .photo-card { break-inside: avoid; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inspection Report</title>
+
+<style>
+:root{
+--blue:#0a84ff;
+--bg:#f2f2f7;
+--card:#ffffff;
+--text:#111;
+--line:#dcdcdc;
+--radius:18px;
+}
+
+*{
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+padding:14px;
+}
+
+.wrap{
+max-width:900px;
+margin:auto;
+}
+
+h1{
+font-size:28px;
+text-align:center;
+margin:10px 0 18px;
+font-weight:700;
+}
+
+.card{
+background:var(--card);
+border-radius:var(--radius);
+padding:16px;
+margin-bottom:14px;
+box-shadow:0 4px 14px rgba(0,0,0,.06);
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr;
+gap:12px;
+}
+
+@media(min-width:700px){
+.grid{
+grid-template-columns:1fr 1fr;
+}
+}
+
+label{
+font-size:14px;
+font-weight:600;
+display:block;
+margin-bottom:6px;
+}
+
+input, textarea{
+width:100%;
+border:1px solid var(--line);
+border-radius:14px;
+padding:12px;
+font-size:16px;
+background:#fff;
+outline:none;
+}
+
+textarea{
+min-height:110px;
+resize:vertical;
+}
+
+button{
+touch-action: manipulation;
+-webkit-appearance: none;
+appearance: none;
+width:100%;
+border:none;
+border-radius:16px;
+padding:15px;
+font-size:17px;
+font-weight:700;
+margin-top:10px;
+cursor:pointer;
+touch-action:manipulation;
+}
+
+.primary{background:var(--blue);color:#fff;}
+.green{background:#34c759;color:#fff;}
+.red{background:#ff3b30;color:#fff;}
+.gray{background:#8e8e93;color:#fff;}
+
+.section-title{
+font-size:18px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+
+.small{
+font-size:12px;
+opacity:.7;
+margin-top:6px;
+}
+
+.footerBtns{
+display:grid;
+grid-template-columns:1fr;
+gap:10px;
+}
+
+@media(min-width:700px){
+.footerBtns{
+grid-template-columns:1fr 1fr 1fr;
+}
+}
+
+@media print{
+body{
+background:#fff;
+padding:0;
+}
+button,.no-print{
+display:none!important;
+}
+.card{
+box-shadow:none;
+border-radius:0;
+page-break-inside:avoid;
+margin:0 0 12px;
+}
+input,textarea{
+border:none;
+padding:0;
+}
+.photoRow{
+page-break-inside:avoid;
+}
+.preview{
+display:block !important;
+max-height:none;
+}
+}
+</style>
 </head>
 <body>
-<div class="wrap">
-  <div class="toolbar">
-    <div><h1>📋 MAYFAIR </h1><small></small></div>
-    <div class="btns">
-      <button class="ghost" id="addPhotosBtn">📸 + Add Photos</button>
-      <button class="secondary" id="clearFormBtn">🧹 Clear Form</button>
-      <button id="printBtn">🖨️ Print / PDF</button>
-    </div>
-  </div>
 
-  <div class="report">
-    <div class="header">
-      <div class="brand">
-        <h2>SITE REPORTS - MAYFAIR FLOORING</h2>
-        <p>SPC · LVT · Wood · Carpet · Quick site reports</p>
-      </div>
-      <div class="status-pill">FLOORING DEPARTMENT</div>
-    </div>
+<div class="wrap" id="reportArea">
 
-    <form id="inspectionForm">
-      <div class="section">
-        <h3><span></span>PROJECT DETAILS</h3>
-        <div class="grid">
-          <div class="field"><label>Project name</label><input type="text" id="projectName" placeholder="e.g., Mayfair Residences"></div>
-          <div class="field"><label>Visit date</label><input type="date" id="projectDate"></div>
-          <div class="field"><label>Location / unit</label><input type="text" id="location" placeholder="Building, floor, room"></div>
-          <div class="field"><label>Client name</label><input type="text" id="clientName"></div>
-          <div class="field"><label>Client contact</label><input type="tel" id="clientContact" placeholder="Phone / email"></div>
-          <div class="field"><label>Inspector</label><input type="text" id="preparedBy"></div>
-          <div class="field"><label>Ref number</label><input type="text" id="refNo" placeholder="optional"></div>
-        </div>
-      </div>
+<h1>Inspection Report</h1>
 
-      <div class="section">
-        <h3><span></span>FLOORING DETAILS</h3>
-        <div class="field"><label>Floor type</label><div class="chips" id="floorTypeGroup"><label class="chip"><input type="radio" name="floorType" value="SPC" checked> SPC</label><label class="chip"><input type="radio" name="floorType" value="LVT"> LVT</label><label class="chip"><input type="radio" name="floorType" value="Wood"> Wood</label><label class="chip"><input type="radio" name="floorType" value="Carpet/Other"> Carpet/Other</label></div></div>
-        <div class="field"><label>Pattern</label><div class="chips" id="patternGroup"><label class="chip"><input type="radio" name="pattern" value="Straight plank" checked> Straight plank</label><label class="chip"><input type="radio" name="pattern" value="Herringbone"> Herringbone</label><label class="chip"><input type="radio" name="pattern" value="Chevron"> Chevron</label><label class="chip"><input type="radio" name="pattern" value="Other"> Other</label></div></div>
-        <div class="field"><label>Remarks (pattern / material)</label><input type="text" id="otherMaterial" placeholder="If Other selected, describe here"></div>
-      </div>
-
-      <div class="section">
-        <h3><span></span>SITE CONDITIONS</h3>
-        <div class="grid">
-          <div class="field"><label>Temperature °C</label><input type="number" step="0.1" id="siteTemp" placeholder="22.5"></div>
-          <div class="field"><label>Material temp °C</label><input type="number" step="0.1" id="materialTemp"></div>
-          <div class="field"><label>Humidity %</label><input type="number" step="0.1" id="siteHumidity"></div>
-          <div class="field"><label>Acclimatisation</label><select id="acclimatisation"><option>Checked/Confirmed</option><option>Not confirmed</option><option>Pending</option></select></div>
-          <div class="field"><label>Area clearance</label><select id="areaClearance"><option>Clear & ready</option><option>Partially cleared</option><option>Not clear</option></select></div>
-          <div class="field"><label>Power/water</label><select id="powerWater"><option>Available</option><option>Partial</option><option>Not available</option></select></div>
-          <div class="field full"><label>General notes (access, protection, working hours)</label><textarea id="generalNotes" placeholder="Describe site access, dust protection, existing furniture etc."></textarea></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3><span></span>VARIATION STATEMENT</h3>
-        <div class="field"><label>Wall removal / level issues</label><textarea id="wallRemoval" placeholder="Differences in level, cracks, wall removal, exposed edges"></textarea></div>
-        <div class="field"><label>Modification works done?</label><div class="chips"><label class="chip"><input type="radio" name="modWorks" value="Yes"> Yes</label><label class="chip"><input type="radio" name="modWorks" value="No" checked> No</label><label class="chip"><input type="radio" name="modWorks" value="Pending"> Pending</label></div></div>
-        <div class="field"><label>Modification details</label><textarea id="modDetails" placeholder="Grinding, levelling, crack injection, moisture barrier"></textarea></div>
-        <div class="field"><label>Variation order required?</label><div class="chips"><label class="chip"><input type="radio" name="variation" value="Yes"> Yes</label><label class="chip"><input type="radio" name="variation" value="No" checked> No</label><label class="chip"><input type="radio" name="variation" value="Pending"> Pending</label></div></div>
-        <div class="field"><label>Variation notes</label><textarea id="variationNotes" placeholder="Cost impact, timeline, extra materials"></textarea></div>
-      </div>
-
-      <div class="section">
-        <h3><span></span>NEXT STEP/RECOMMENDATIONS</h3>
-        <div class="field"><label>Summary of findings</label><textarea id="afterVisit" placeholder="Overall readiness, missing elements, next steps"></textarea></div>
-        <div class="field"><label>Recommendation</label><textarea id="recommendation" placeholder="Approve, proceed after minor works, variation required, re-inspect"></textarea></div>
-      </div>
-
-      <!-- PHOTO SECTION -->
-      <div class="section">
-        <div class="photo-header">
-          <div><h3 style="margin:0 0 5px"><span></span>📷 Inspection Photos + Comments</h3><div class="hint" style="font-size:13px; color:#5e7285;">Each image includes a note field – type your remarks (substrate, cracks, moisture).</div></div>
-          <div class="file-upload-btn" id="customPhotoBtn">📎 Choose photos (camera / gallery)</div>
-          <input type="file" id="photoFileInput" accept="image/*" multiple capture="environment" style="display:none">
-        </div>
-        <div id="photoGrid" class="photo-grid"></div>
-      </div>
-
-      <div class="section">
-        <h3><span></span>INSPECTION CARRIED-OUT BY</h3>
-        <div class="signature">
-          <div class="field"><label>Client name</label><input id="clientSign" type="text" placeholder="Client representative"></div>
-          <div class="field"><label>Inspector name</label><input id="inspectorSign" type="text" placeholder="Lead inspector"></div>
-          <div class="field"><label>Sign date</label><input id="dateSign" type="date"></div>
-          <div class="field"><label>Overall status</label><select id="status"><option>Ready for installation</option><option>Ready after minor works</option><option>Hold / not ready</option></select></div>
-        </div>
-      </div>
-      <div class="footer-note">
-        ALL RIGHTS RESERVED © 2027RANGA PERERA- REPORT RELATED ISSUES RELATED CONTACT ADMIN/PUBLISHER
-      </div>
-    </form>
-  </div>
+<div class="card">
+<div class="grid">
+<div>
+<label>Project Name</label>
+<input id="project" placeholder="Enter project name">
 </div>
 
+<div>
+<label>Location</label>
+<input id="location" placeholder="Enter location">
+</div>
+
+<div>
+<label>Client Name</label>
+<input id="client" placeholder="Enter client name">
+</div>
+
+<div>
+<label>Material Name</label>
+<input id="material" placeholder="Enter material">
+</div>
+
+<div>
+<label>Pattern</label>
+<input id="pattern" placeholder="Enter pattern">
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="section-title">General Notes</div>
+<textarea id="notes" placeholder="Write notes..."></textarea>
+</div>
+
+<div class="card">
+<div class="section-title">Variation Details</div>
+<textarea id="variation" placeholder="Write variations..."></textarea>
+</div>
+
+<div class="card no-print">
+<div class="footerBtns">
+<button class="green" onclick="downloadPDF()">Download PDF</button>
+<button class="gray" onclick="window.print()">Print Preview</button>
+<button class="red" onclick="clearForm()">Clear Form</button>
+</div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <script>
-  (function() {
-    // ----- DOM elements -----
-    const photoFileInput = document.getElementById('photoFileInput');
-    const photoGrid = document.getElementById('photoGrid');
-    const customPhotoBtn = document.getElementById('customPhotoBtn');
-    const addPhotosBtn = document.getElementById('addPhotosBtn');
-    const clearFormBtn = document.getElementById('clearFormBtn');
-    const printBtn = document.getElementById('printBtn');
-    const form = document.getElementById('inspectionForm');
+(function(){
+  if("ontouchstart" in window){
+    document.addEventListener("touchstart", function(){}, {passive:true});
+  }
+})();
 
-    // ----- Helper: create photo card with comment box -----
-    function addPhotoCard(file, dataUrl) {
-      const card = document.createElement('div');
-      card.className = 'photo-card';
-      const fileName = file.name.length > 28 ? file.name.slice(0, 25) + '…' : file.name;
-      const fileSize = Math.round(file.size / 1024);
-      card.innerHTML = `
-        <div class="photo-slot">
-          <img src="${dataUrl}" alt="inspection image">
-        </div>
-        <div class="photo-meta">
-          <div class="photo-title">
-            <span>📸 ${fileName}</span>
-            <span>${fileSize} KB</span>
-          </div>
-          <textarea placeholder="✏️ Comment: level difference, crack, moisture, or general observation..." rows="2"></textarea>
-          <button type="button" class="remove">🗑 Remove photo & comment</button>
-        </div>
-      `;
-      const removeBtn = card.querySelector('.remove');
-      removeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        card.remove();
-      });
-      photoGrid.appendChild(card);
-    }
+function downloadPDF(){
+const element=document.getElementById("reportArea");
+const opt={
+margin:0.2,
+filename:'Inspection_Report.pdf',
+image:{type:'jpeg',quality:1},
+html2canvas:{scale:2,useCORS:true,scrollY:0},
+jsPDF:{unit:'in',format:'a4',orientation:'portrait'},
+pagebreak:{mode:['avoid-all','css','legacy']}
+};
+html2pdf().set(opt).from(element).save();
+}
 
-    // ----- Handle file selection (iOS compatible) -----
-    function handleFiles(files) {
-      if (!files || files.length === 0) return;
-      Array.from(files).forEach(file => {
-        if (!file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          addPhotoCard(file, ev.target.result);
-        };
-        reader.readAsDataURL(file);
-      });
-      // reset file input to allow re-uploading the same files
-      photoFileInput.value = '';
-    }
-
-    photoFileInput.addEventListener('change', (e) => {
-      handleFiles(e.target.files);
-    });
-
-    // trigger file picker from both buttons
-    function openFilePicker() {
-      photoFileInput.click();
-    }
-    if (customPhotoBtn) customPhotoBtn.addEventListener('click', openFilePicker);
-    if (addPhotosBtn) addPhotosBtn.addEventListener('click', openFilePicker);
-
-    // ----- Clear Form: reset all inputs + remove all photos -----
-    function clearForm() {
-      if (!confirm('Clear ALL form data and remove all uploaded photos with comments?')) return;
-      // reset native form
-      form.reset();
-      // remove all photo cards
-      photoGrid.innerHTML = '';
-      // manually reset radio groups to default states because reset() may not restore initial "checked" attributes correctly in some browsers
-      const floorRadios = document.querySelectorAll('input[name="floorType"]');
-      if (floorRadios.length) floorRadios[0].checked = true;
-      const patternRadios = document.querySelectorAll('input[name="pattern"]');
-      if (patternRadios.length) patternRadios[0].checked = true;
-      const modRadios = document.querySelectorAll('input[name="modWorks"]');
-      if (modRadios.length >= 2) modRadios[1].checked = true; // "No" is second
-      const varRadios = document.querySelectorAll('input[name="variation"]');
-      if (varRadios.length >= 2) varRadios[1].checked = true; // "No" is second
-      
-      // set default dates
-      const today = new Date().toISOString().slice(0,10);
-      const projDate = document.getElementById('projectDate');
-      const signDate = document.getElementById('dateSign');
-      if (projDate) projDate.value = today;
-      if (signDate) signDate.value = today;
-    }
-    if (clearFormBtn) clearFormBtn.addEventListener('click', clearForm);
-
-    // ----- Print report as PDF -----
-    if (printBtn) printBtn.addEventListener('click', () => {
-      window.print();
-    });
-
-    // ----- Set default dates on page load -----
-    function setDefaultDates() {
-      const today = new Date().toISOString().slice(0,10);
-      const projectDate = document.getElementById('projectDate');
-      const dateSign = document.getElementById('dateSign');
-      if (projectDate && !projectDate.value) projectDate.value = today;
-      if (dateSign && !dateSign.value) dateSign.value = today;
-    }
-    setDefaultDates();
-
-    // ----- for chips: ensure clicks on the whole chip toggle the radio (already works but improve touch) -----
-    // Also ensure that any dynamically added content (like remove buttons) are handled.
-    // Prevents any default tap highlights
-    const allChips = document.querySelectorAll('.chip');
-    allChips.forEach(chip => {
-      chip.addEventListener('click', (e) => {
-        const radio = chip.querySelector('input[type="radio"]');
-        if (radio && !radio.checked) {
-          radio.checked = true;
-          // trigger change event just in case
-          const changeEvent = new Event('change', { bubbles: true });
-          radio.dispatchEvent(changeEvent);
-        }
-      });
-    });
-  })();
+function clearForm(){
+if(confirm("Clear all report data?")){
+document.querySelectorAll("input, textarea").forEach(el=>el.value='');
+}
+}
 </script>
+
 </body>
 </html>
