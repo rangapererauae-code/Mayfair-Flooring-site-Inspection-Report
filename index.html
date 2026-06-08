@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Site Inspection Report - Mayfair Flooring</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #d4af37; /* Gold */
+            --header-bg: #0f172a; /* Very Dark Slate */
+            --border: #cbd5e1;
+            --primary-btn: #1e293b;
+        }
+        * { box-sizing: border-box; font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.5; }
+        .container { max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 6px solid var(--accent); }
+        
+        /* Header Actions */
+        .actions-bar { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
+        .btn { background-color: transparent; color: var(--primary-btn); border: 2px solid var(--primary-btn); padding: 10px 20px; font-size: 15px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
+        .btn:hover, .btn:active { background-color: var(--primary-btn); color: white; }
+        .btn-primary { background-color: var(--accent); color: white; border-color: var(--accent); }
+        .btn-primary:hover, .btn-primary:active { background-color: #c5a030; border-color: #c5a030; }
+        
+        /* Typography */
+        .page-header { text-align: left; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 4px solid var(--header-bg); padding-bottom: 10px; }
+        
+        /* Status Selector */
+        .status-selector { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; margin-top: 5px; }
+        .status-btn { cursor: pointer; }
+        .status-btn input { display: none; }
+        .status-btn span { display: inline-block; padding: 6px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; border: 1px solid var(--border); color: var(--text-muted); background: var(--card-bg); transition: all 0.2s; }
+        .status-btn.status-ready input:checked + span { background-color: #10b981; color: white; border-color: #10b981; }
+        .status-btn.status-minor input:checked + span { background-color: #f59e0b; color: white; border-color: #f59e0b; }
+        .status-btn.status-hold input:checked + span { background-color: #ef4444; color: white; border-color: #ef4444; }
+        
+        .status-selector.has-selection .status-btn:not(.is-checked) { display: none; }
+        .status-selector::after { content: "(Tap again to change)"; font-size: 10px; color: var(--text-muted); display: none; margin-top: 4px; text-align: right; font-weight: normal; }
+        .status-selector.has-selection::after { display: block; }
+        .page-header .brand { text-align: left; }
+        .page-header h1 { margin: 0; font-size: 32px; color: var(--header-bg); letter-spacing: 1px; font-weight: 800; text-transform: uppercase; }
+        .page-header h2 { margin: 0; font-size: 20px; font-weight: 600; color: var(--text-main); }
+        .page-header h3 { margin: 5px 0 0; font-size: 14px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+        
+        /* Form Sections */
+        .section { margin-bottom: 25px; border: 1px solid var(--border); }
+        .section-title { background-color: var(--header-bg); color: white; padding: 10px 15px; font-size: 14px; margin: 0; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; display: flex; align-items: center; }
+        .section-title::before { content: ''; display: inline-block; width: 4px; height: 16px; background-color: var(--accent); margin-right: 10px; }
+        .section-content { padding: 20px; }
+
+        /* Grid & Inputs */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-full { grid-column: 1 / -1; }
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        input[type="text"], input[type="date"], input[type="number"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border); font-size: 15px; background-color: #fdfdfd; transition: border-color 0.2s; border-radius: 0; }
+        input:focus, textarea:focus { outline: none; border-color: var(--header-bg); box-shadow: 0 0 0 1px var(--header-bg); }
+        textarea { resize: none; overflow: hidden; min-height: 50px; }
+        
+        /* Radios */
+        .radio-group { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; padding: 5px 0; }
+        .radio-label { display: flex; align-items: center; gap: 6px; font-size: 15px; cursor: pointer; color: var(--text-main); font-weight: 500; }
+        input[type="radio"] { width: 16px; height: 16px; accent-color: var(--header-bg); margin: 0; }
+
+        /* Photos Section */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }
+        .photo-item { display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--border); padding: 10px; background: #fff; }
+        .photo-item img { width: 100%; height: 200px; object-fit: contain; background: #f1f5f9; border: 1px solid var(--border); }
+        .remove-btn { background: #ef4444; color: white; border: none; padding: 8px; font-size: 14px; margin-top: auto; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        
+        /* Footer */
+        .footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); font-weight: bold; letter-spacing: 1px; }
+        
+        @media (max-width: 650px) {
+            .grid { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .page-header .brand, .page-header .doc-title { width: 100%; text-align: left !important; }
+            .status-selector { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+        }
+
+        /* Print Styles - Colorful & Portrait Optimized */
+        @media print {
+            @page { margin: 10mm; size: A4 portrait; }
+            body { padding: 0; }
+            .container { padding: 0; box-shadow: none; border: none; max-width: 100%; margin: 0; }
+            .noprint { display: none !important; }
+            
+            .status-selector::after { display: none !important; }
+            .status-btn input:not(:checked) + span { display: none !important; }
+            .status-btn input:checked + span { font-size: 14px; padding: 8px 16px; border: none !important; box-shadow: none !important; }
+            
+            .page-header { border-bottom-width: 4px; margin-bottom: 15px; padding-bottom: 5px; }
+            .page-header h1 { font-size: 24px; }
+            .page-header h2 { font-size: 18px; }
+            
+            .section { margin-bottom: 15px; break-inside: avoid; }
+            .section-title { font-size: 12px; }
+            .section-content { padding: 10px; }
+            
+            .grid { gap: 10px; }
+            .input-group label { font-size: 10px; margin-bottom: 2px; }
+            
+            /* Highlight typed inputs in blue */
+            input[type="text"], input[type="date"], input[type="number"], textarea { border: none; border-bottom: 1px dashed var(--border); background: transparent; padding: 3px 0; font-size: 13px; color: #007aff; font-weight: 500; }
+            textarea { border-bottom: none; border-left: 2px solid #007aff; padding-left: 6px; min-height: auto; }
+            
+            .radio-group { gap: 12px; padding: 0; }
+            .radio-label { font-size: 11px; }
+            
+            .photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; display: grid; }
+            .photo-item { padding: 5px; break-inside: avoid; gap: 4px; border: 1px solid var(--border); }
+            .photo-item img { height: 160px; border: 1px solid var(--border); border-radius: 2px; }
+            .photo-item textarea { font-size: 11px; border: none; color: #007aff; }
+            
+            .footer { margin-top: 20px; font-size: 9px; padding-top: 10px; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="actions-bar noprint">
+        <input type="file" id="photoInput" accept="image/*" multiple style="display: none;">
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('photoInput').click()">📸 Add Photos</button>
+        <button type="button" class="btn" onclick="clearForm()">🧹 Clear Form</button>
+        <button type="button" class="btn" onclick="window.print()">🖨️ Print PDF</button>
+    </div>
+
+    <div class="page-header">
+        <div class="brand">
+            <h1>MAYFAIR FLOORING</h1>
+            <h3>FLOORING DEPARTMENT</h3>
+        </div>
+        <div class="doc-title" style="text-align: right;">
+            <h2>SITE INSPECTION REPORTS</h2>
+            <div class="status-selector">
+                <label class="status-btn status-ready">
+                    <input type="radio" name="overallStatus" value="Ready for installation">
+                    <span>READY FOR INSTALLATION</span>
+                </label>
+                <label class="status-btn status-minor">
+                    <input type="radio" name="overallStatus" value="Ready after minor works">
+                    <span>READY AFTER MINOR WORKS</span>
+                </label>
+                <label class="status-btn status-hold">
+                    <input type="radio" name="overallStatus" value="Hold / not ready">
+                    <span>HOLD / NOT READY</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <form id="inspectionForm">
+        <!-- PROJECT DETAILS -->
+        <div class="section">
+            <h4 class="section-title">PROJECT DETAILS</h4>
+            <div class="section-content">
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Project name</label>
+                        <input type="text" name="projectName">
+                    </div>
+                    <div class="input-group">
+                        <label>Visit date</label>
+                        <input type="date" name="visitDate">
+                    </div>
+                    <div class="input-group">
+                        <label>Location / unit</label>
+                        <input type="text" name="location">
+                    </div>
+                    <div class="input-group">
+                        <label>Ref number</label>
+                        <input type="text" name="refNumber">
+                    </div>
+                    <div class="input-group">
+                        <label>Client name</label>
+                        <input type="text" name="clientName">
+                    </div>
+                    <div class="input-group">
+                        <label>Client contact</label>
+                        <input type="text" name="clientContact">
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Inspector</label>
+                        <input type="text" name="inspectorName">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLOORING DETAILS -->
+        <div class="section">
+            <h4 class="section-title">FLOORING DETAILS</h4>
+            <div class="section-content">
+                <div class="grid">
+                    <div class="input-group grid-full">
+                        <label>Floor type</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="floorType" value="SPC"> SPC</label>
+                            <label class="radio-label"><input type="radio" name="floorType" value="LVT"> LVT</label>
+                            <label class="radio-label"><input type="radio" name="floorType" value="Wood"> Wood</label>
+                            <label class="radio-label"><input type="radio" name="floorType" value="Carpet/Other"> Carpet/Other</label>
+                        </div>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Pattern</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="pattern" value="Straight plank"> Straight plank</label>
+                            <label class="radio-label"><input type="radio" name="pattern" value="Herringbone"> Herringbone</label>
+                            <label class="radio-label"><input type="radio" name="pattern" value="Chevron"> Chevron</label>
+                            <label class="radio-label"><input type="radio" name="pattern" value="Other"> Other</label>
+                        </div>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Remarks (pattern / material)</label>
+                        <textarea name="flooringRemarks"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SITE CONDITIONS -->
+        <div class="section">
+            <h4 class="section-title">SITE CONDITIONS</h4>
+            <div class="section-content">
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Temperature °C</label>
+                        <input type="number" name="temperature">
+                    </div>
+                    <div class="input-group">
+                        <label>Material temp °C</label>
+                        <input type="number" name="materialTemp">
+                    </div>
+                    <div class="input-group">
+                        <label>Humidity %</label>
+                        <input type="number" name="humidity">
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Acclimatisation</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="acclimatisation" value="Checked/Confirmed"> Checked/Confirmed</label>
+                            <label class="radio-label"><input type="radio" name="acclimatisation" value="Not confirmed"> Not confirmed</label>
+                            <label class="radio-label"><input type="radio" name="acclimatisation" value="Pending"> Pending</label>
+                        </div>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Area clearance</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="areaClearance" value="Clear & ready"> Clear & ready</label>
+                            <label class="radio-label"><input type="radio" name="areaClearance" value="Partially cleared"> Partially cleared</label>
+                            <label class="radio-label"><input type="radio" name="areaClearance" value="Not clear"> Not clear</label>
+                        </div>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Power/water</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="powerWater" value="Available"> Available</label>
+                            <label class="radio-label"><input type="radio" name="powerWater" value="Partial"> Partial</label>
+                            <label class="radio-label"><input type="radio" name="powerWater" value="Not available"> Not available</label>
+                        </div>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>General notes (access, protection, working hours)</label>
+                        <textarea name="generalNotes"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VARIATION STATEMENT -->
+        <div class="section">
+            <h4 class="section-title">VARIATION STATEMENT</h4>
+            <div class="section-content">
+                <div class="grid">
+                    <div class="input-group grid-full">
+                        <label>Wall removal / level issues</label>
+                        <textarea name="wallRemoval"></textarea>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Modification works done?</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="modWorksDone" value="Yes"> Yes</label>
+                            <label class="radio-label"><input type="radio" name="modWorksDone" value="No"> No</label>
+                            <label class="radio-label"><input type="radio" name="modWorksDone" value="Pending"> Pending</label>
+                        </div>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Modification details</label>
+                        <textarea name="modDetails"></textarea>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Variation order required?</label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="voRequired" value="Yes"> Yes</label>
+                            <label class="radio-label"><input type="radio" name="voRequired" value="No"> No</label>
+                            <label class="radio-label"><input type="radio" name="voRequired" value="Pending"> Pending</label>
+                        </div>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Variation notes</label>
+                        <textarea name="variationNotes"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEXT STEP/RECOMMENDATIONS -->
+        <div class="section">
+            <h4 class="section-title">NEXT STEP / RECOMMENDATIONS</h4>
+            <div class="section-content">
+                <div class="grid">
+                    <div class="input-group grid-full">
+                        <label>Summary of findings</label>
+                        <textarea name="summaryFindings"></textarea>
+                    </div>
+                    <div class="input-group grid-full">
+                        <label>Recommendation</label>
+                        <textarea name="recommendation"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHOTOS -->
+        <div class="section">
+            <h4 class="section-title">📷 INSPECTION PHOTOS + COMMENTS</h4>
+            <div class="section-content">
+                <p class="noprint" style="font-size: 13px; color: var(--text-muted); margin-top: 0; font-style: italic;">Each image includes a note field – type your remarks (substrate, cracks, moisture).</p>
+                <div class="photo-grid" id="photoGrid"></div>
+            </div>
+        </div>
+
+        <!-- INSPECTION CARRIED-OUT BY -->
+        <div class="section">
+            <h4 class="section-title">INSPECTION CARRIED-OUT BY</h4>
+            <div class="section-content">
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Client name (Signee)</label>
+                        <input type="text" name="signClientName">
+                    </div>
+                    <div class="input-group">
+                        <label>Inspector name</label>
+                        <input type="text" name="signInspectorName">
+                    </div>
+                    <div class="input-group">
+                        <label>Sign date</label>
+                        <input type="date" name="signDate">
+                    </div>
+                    <!-- Overall status moved to header -->
+                </div>
+            </div>
+        </div>
+
+    </form>
+    
+    <div class="footer">
+        ALL RIGHTS RESERVED ©️ 2027 RANGA PERERA - REPORT RELATED ISSUES? CONTACT ADMIN/PUBLISHER
+    </div>
+</div>
+
+<script>
+    const photoInput = document.getElementById('photoInput');
+    const photoGrid = document.getElementById('photoGrid');
+
+    // Handle photo selection
+    photoInput.addEventListener('change', function(e) {
+        const files = e.target.files;
+        for(let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (!file.type.startsWith('image/')) continue;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const div = document.createElement('div');
+                div.className = 'photo-item';
+                div.innerHTML = `
+                    <img src="${event.target.result}" alt="Inspection Photo">
+                    <textarea placeholder="Type your remarks here (substrate, cracks, moisture)..."></textarea>
+                    <button type="button" class="remove-btn noprint" onclick="this.parentElement.remove()">❌ REMOVE</button>
+                `;
+                photoGrid.appendChild(div);
+            }
+            reader.readAsDataURL(file);
+        }
+        this.value = ''; // Reset input to allow selecting same files again if needed
+    });
+
+    // Clear form function
+    function clearForm() {
+        if(confirm('Are you sure you want to clear the entire form and remove all photos?')) {
+            document.getElementById('inspectionForm').reset();
+            photoGrid.innerHTML = '';
+            document.querySelectorAll('textarea').forEach(el => el.style.height = 'auto');
+            document.querySelector('.status-selector').classList.remove('has-selection');
+            document.querySelectorAll('.status-btn').forEach(l => l.classList.remove('is-checked'));
+            document.querySelectorAll('input[name="overallStatus"]').forEach(r => r.wasChecked = false);
+        }
+    }
+
+    // Status Selector Logic
+    const statusSelector = document.querySelector('.status-selector');
+    const statusLabels = document.querySelectorAll('.status-btn');
+    const statusRadios = document.querySelectorAll('input[name="overallStatus"]');
+
+    statusRadios.forEach((radio, index) => {
+        radio.addEventListener('click', function(e) {
+            if (this.wasChecked) {
+                this.checked = false;
+                this.wasChecked = false;
+                statusSelector.classList.remove('has-selection');
+                statusLabels.forEach(l => l.classList.remove('is-checked'));
+            } else {
+                statusRadios.forEach(r => r.wasChecked = false);
+                this.wasChecked = true;
+                statusSelector.classList.add('has-selection');
+                statusLabels.forEach(l => l.classList.remove('is-checked'));
+                statusLabels[index].classList.add('is-checked');
+            }
+        });
+    });
+
+    // Auto-resize textareas (especially useful for printing so text isn't cut off)
+    document.addEventListener('input', function (event) {
+        if (event.target.tagName.toLowerCase() !== 'textarea') return;
+        autoResize(event.target);
+    }, false);
+
+    function autoResize(el) {
+        el.style.height = 'auto';
+        el.style.height = (el.scrollHeight) + 'px';
+    }
+</script>
+</body>
+</html>
